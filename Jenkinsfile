@@ -1,30 +1,33 @@
 pipeline {
-  agent any
-  options { timestamps(); ansiColor('xterm') }
+    agent any
+    options { timestamps() }
 
-  // Poll GitHub for new commits instead of using a webhook
-  triggers { pollSCM('H/2 * * * *') }  // every ~2 minutes
+    triggers { pollSCM('H/2 * * * *') } // every ~2 minutes
 
-  stages {
+    stages {
+        stage('Build') {
+            steps {
+                ansiColor('xterm') {
+                    echo 'TASK: Build the code.'
+                    echo 'TOOL: Maven (e.g., mvn -B clean package).'
+                }
+            }
+        }
 
-    stage('Build') {
-      steps {
-        echo 'TASK: Build the code.'
-        echo 'TOOL: Maven (e.g., mvn -B clean package).'
-      }
-    }
+        stage('Unit & Integration Tests') {
+            steps {
+                ansiColor('xterm') {
+                    echo 'TASK: Run unit tests and integration tests.'
+                    echo 'TOOLS: JUnit via Maven Surefire; Postman/Newman or REST Assured for integration.'
+                }
+            }
+        }
 
-    stage('Unit & Integration Tests') {
-      steps {
-        echo 'TASK: Run unit tests and integration tests.'
-        echo 'TOOLS: JUnit via Maven Surefire; Postman/Newman or REST Assured for integration.'
-      }
-    }
-
-    stage('Code Analysis') {
-      steps {
-        echo 'TASK: Static code analysis to ensure standards.'
-        echo 'TOOLS: SonarQube/SonarScanner, PMD, Checkstyle.'
+        stage('Code Analysis') {
+            steps {
+                ansiColor('xterm') {
+                    echo 'TASK: Static code analysis to ensure standards.'
+                    echo 'TOOLS: SonarQube/SonarScanner, PMD, Checkstyle.'
       }
     }
 
@@ -63,3 +66,4 @@ pipeline {
     }
   }
 }
+
